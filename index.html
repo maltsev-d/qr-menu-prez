@@ -124,11 +124,11 @@
       margin: 26px auto 0;
       border-radius: 16px;
       background: linear-gradient(145deg, #EAE6DE, #D8D3C8);
-      border: 1.5px dashed #C4BFB5;
+      border: 1.5px solid #C4BFB5;
       box-shadow: 0 8px 24px rgba(0,0,0,.10);
       display: flex;
       align-items: center;
-	  
+	  overflow: hidden;
       justify-content: center;
       color: var(--muted);
       font-size: 11px;
@@ -313,7 +313,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      border: 1.5px dashed #C4BFB5;
+      border: 1.5px solid #C4BFB5;
       box-shadow: 0 8px 24px rgba(0,0,0,.10);
       overflow: hidden;
     }
@@ -385,7 +385,7 @@
     .desktop-screen {
       background: linear-gradient(145deg, #EAE6DE, #D8D3C8);
       border-radius: 16px;
-      border: 1.5px dashed #C4BFB5;
+      border: 1.5px solid #C4BFB5;
       min-height: 280px;
       display: flex;
       align-items: center;
@@ -424,13 +424,14 @@
     }
 	
 	.feat-logos {
-	  display: flex;
+	  display: grid;
+	  grid-template-columns: repeat(2, 50px);
 	  justify-content: center;
 	  align-items: center;
 	  gap: 14px;
 	  margin-top: 30px;
 	}
-	
+
 	.feat-logos img {
 	  width: 50px;
 	  height: 50px;
@@ -893,10 +894,7 @@
 
       <article class="feat">
         <div class="with-screen left">
-          <div class="screen-col">
-            
-          </div>
-
+          
           <div class="text-col">
             <span class="pill green">Сервис</span>
             <h2 class="feat-title">Официант узнаёт сразу</h2>
@@ -964,16 +962,14 @@
 	  
 	  
         <div class="with-screen left">
-          <div class="screen-col">
-            <div class="feat-logos">
-				<img src="logos/whatsapp.png" alt="WhatsApp">
-				<img src="logos/telegram.png" alt="Telegram">
-			</div>
+		  <div class="screen-col">
 			<div class="feat-logos">
-				<img src="logos/line.png" alt="LINE">
-				<img src="logos/facebook-messenger.png" alt="Facebook">
+			  <img src="logos/whatsapp.png" alt="WhatsApp">
+			  <img src="logos/telegram.png" alt="Telegram">
+			  <img src="logos/line.png" alt="LINE">
+			  <img src="logos/facebook-messenger.png" alt="Facebook Messenger">
 			</div>
-          </div>
+		  </div>
 
           <div class="text-col">
             <span class="pill teal">Как удобно вам</span>
