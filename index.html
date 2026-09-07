@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sabaidee Kitchen — QR-меню, заказ и управление заказами для ресторанов.">
+  <title>Sabaidee Kitchen — QR-меню для ресторана</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --orange: #FF7A30;
+      --orange-dark: #CC5500;
+      --teal: #4ECDC4;
+      --success: #2D9B6B;
+      --bg: #F5F3EE;
+      --surface: #FFFFFF;
+      --text: #1A1A1A;
+      --muted: #7A7670;
+      --border: #E8E4DC;
+      --shadow: 0 10px 30px rgba(0,0,0,.07);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding-bottom: 56px;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--orange);
+      padding: 58px 24px 86px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: var(--bg);
+      clip-path: ellipse(58% 100% at 50% 100%);
+    }
+
+    .hero-inner {
+      max-width: 620px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-mark {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: clamp(28px, 7vw, 44px);
+      font-weight: 800;
+      line-height: 1.08;
+      margin-bottom: 14px;
+    }
+
+    .hero-sub {
+      color: rgba(255,255,255,.88);
+      font-size: clamp(15px, 3vw, 18px);
+      font-weight: 500;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+    }
+
+    .hero-qr {
+      width: 118px;
+      height: 118px;
+      margin: 26px auto 0;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #EAE6DE, #D8D3C8);
+      border: 1.5px dashed #C4BFB5;
+      box-shadow: 0 8px 24px rgba(0,0,0,.10);
+      display: flex;
+      align-items: center;
+	  
+      justify-content: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+    }
+	
+	.hero-qr img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 0 16px;
+    }
+
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 42px 8px 20px;
+    }
+
+    .sec-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .sec-icon.orange { background: #FFE8D6; }
+    .sec-icon.teal { background: #D6F5F3; }
+    .sec-icon.green { background: #D6EFE3; }
+
+    .sec-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-title {
+      padding: 0 8px 18px;
+      font-size: clamp(22px, 5vw, 30px);
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    /* TEXT CARD */
+    .intro {
+      margin: 0 0 10px;
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .intro p {
+      font-size: 14px;
+      color: #333;
+      line-height: 1.7;
+      margin-bottom: 11px;
+    }
+
+    .intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro strong {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    /* FEATURE */
+    .feat {
+      margin: 0 0 10px;
+      background: var(--surface);
+      border-radius: 20px;
+      overflow: visible;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .feat-inner {
+      padding: 22px;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pill.orange {
+      background: #FFE8D6;
+      color: #CC5500;
+    }
+
+    .pill.teal {
+      background: #D6F5F3;
+      color: #1A8C87;
+    }
+
+    .pill.green {
+      background: #D6EFE3;
+      color: #1A6B42;
+    }
+
+    .feat-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .feat-text {
+      font-size: 13.5px;
+      color: #444;
+      line-height: 1.7;
+    }
+
+    .feat-text + .feat-text {
+      margin-top: 8px;
+    }
+
+    /* SCREEN + TEXT */
+    .with-screen {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      overflow: visible;
+    }
+
+    .with-screen.right {
+      flex-direction: row;
+    }
+
+    .with-screen.left {
+      flex-direction: row-reverse;
+    }
+
+    .screen-col {
+      flex-shrink: 0;
+      width: 30%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .with-screen.right .screen-col {
+      margin-right: -10px;
+      margin-top: -14px;
+      margin-bottom: -14px;
+    }
+
+    .with-screen.left .screen-col {
+      margin-left: -10px;
+      margin-top: -14px;
+      margin-bottom: -14px;
+    }
+
+    .screen-frame {
+      background: linear-gradient(145deg, #EAE6DE, #D8D3C8);
+      border-radius: 16px;
+      aspect-ratio: 9 / 19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1.5px dashed #C4BFB5;
+      box-shadow: 0 8px 24px rgba(0,0,0,.10);
+      overflow: hidden;
+    }
+
+    .screen-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .with-screen.right .screen-frame {
+      border-radius: 16px 8px 8px 16px;
+    }
+
+    .with-screen.left .screen-frame {
+      border-radius: 8px 16px 16px 8px;
+    }
+
+    .screen-emoji {
+      font-size: 20px;
+    }
+
+    .screen-caption {
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 600;
+      text-align: center;
+      padding: 0 8px;
+      line-height: 1.4;
+    }
+
+    .text-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .with-screen.right .text-col {
+      padding: 22px 22px 22px 18px;
+    }
+
+    .with-screen.left .text-col {
+      padding: 22px 18px 22px 22px;
+    }
+
+    /* MENU "SURPRISE" */
+    .surprise {
+      margin-top: 18px;
+      padding: 14px 15px;
+      background: #FFF8F2;
+      border: 1px solid #F5DDCB;
+      border-radius: 13px;
+    }
+
+    .surprise-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--orange-dark);
+      margin-bottom: 4px;
+    }
+
+    .surprise-text {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.55;
+    }
+
+    /* DESKTOP SCREEN */
+    .desktop-screen {
+      background: linear-gradient(145deg, #EAE6DE, #D8D3C8);
+      border-radius: 16px;
+      border: 1.5px dashed #C4BFB5;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
+    .desktop-screen .screen-emoji {
+      font-size: 26px;
+    }
+	
+	.desktop-screen img {
+	  width: 100%;
+	  height: auto;
+	  display: block;
+	  border-radius: 10px;
+	}
+
+    /* MESSENGER */
+    .messengers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 17px;
+    }
+
+    .messenger {
+      padding: 7px 11px;
+      background: #F5F3EE;
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #555;
+    }
+	
+	.feat-logos {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  gap: 14px;
+	  margin-top: 30px;
+	}
+	
+	.feat-logos img {
+	  width: 50px;
+	  height: 50px;
+	  object-fit: contain;
+	  display: block;
+	}
+	
+
+    /* ANALYTICS LIST */
+    .analytics-list {
+      list-style: none;
+      margin-top: 15px;
+    }
+
+    .analytics-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13.5px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .analytics-list li:last-child {
+      border-bottom: none;
+    }
+
+    .li-icon {
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* BENEFITS */
+    .benefits {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .benefit {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 19px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .benefit-icon {
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
+
+    .benefit-title {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 5px;
+      line-height: 1.3;
+    }
+
+    .benefit-text {
+      font-size: 12.5px;
+      color: #555;
+      line-height: 1.55;
+    }
+
+    /* CTA */
+	.cta {
+	  margin: 14px 0 0;
+	  background: var(--orange);
+	  border-radius: 24px;
+	  padding: 42px 28px 38px;
+	  text-align: center;
+	  box-shadow: 0 14px 40px rgba(255,122,48,.22);
+	  position: relative;
+	  overflow: hidden;
+	}
+
+	.cta h2 {
+	  color: #fff;
+	  font-size: clamp(25px, 5vw, 34px);
+	  font-weight: 800;
+	  line-height: 1.15;
+	  margin-bottom: 14px;
+	}
+
+	.cta-lead {
+	  color: rgba(255,255,255,.95);
+	  font-size: 15px;
+	  line-height: 1.65;
+	  max-width: 560px;
+	  margin: 0 auto 22px;
+	}
+
+	.custom-list {
+	  display: grid;
+	  gap: 10px;
+	  max-width: 460px;
+	  margin: 0 auto 28px;
+	  padding: 18px 20px;
+	  background: rgba(255,255,255,.13);
+	  border: 1px solid rgba(255,255,255,.18);
+	  border-radius: 16px;
+	  text-align: left;
+	}
+
+	.custom-item {
+	  display: flex;
+	  align-items: flex-start;
+	  gap: 10px;
+	  color: #fff;
+	  font-size: 13.5px;
+	  font-weight: 600;
+	  line-height: 1.5;
+	}
+
+	.custom-item::before {
+	  content: '✓';
+	  width: 20px;
+	  height: 20px;
+	  flex-shrink: 0;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  background: rgba(255,255,255,.2);
+	  border-radius: 50%;
+	  font-size: 11px;
+	  font-weight: 800;
+	  margin-top: 1px;
+	}
+
+	.cta-button {
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 9px;
+	  min-height: 52px;
+	  padding: 14px 28px;
+	  background: #23cd0a;
+	  color: #fff;
+	  text-decoration: none;
+	  font-size: 15px;
+	  font-weight: 800;
+	  border-radius: 14px;
+	  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+	  transition: transform .2s ease, box-shadow .2s ease;
+	}
+
+	.cta-button::before {
+	  content: '💬';
+	  font-size: 17px;
+	}
+
+	.cta-button:hover {
+	  transform: translateY(-3px);
+	  box-shadow: 0 12px 26px rgba(0,0,0,.18);
+	}
+
+	.cta-button:active {
+	  transform: translateY(0);
+	}
+
+    /* FOOTER */
+	.footer {
+	  text-align: center;
+	  padding: 32px 16px 8px;
+	  color: var(--muted);
+	  font-size: 12px;
+	  line-height: 1.6;
+	}
+
+	.footer strong {
+	  display: inline-block;
+	  color: var(--text);
+	  font-size: 15px;
+	  font-weight: 800;
+	  margin-bottom: 2px;
+	}
+
+	.footer-links {
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  gap: 14px;
+	  margin-top: 18px;
+	}
+
+	.footer a {
+	  width: 42px;
+	  height: 42px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 7px;
+	  background: var(--surface);
+	  border: 1px solid var(--border);
+	  border-radius: 12px;
+	  text-decoration: none;
+	  box-shadow: 0 3px 10px rgba(0,0,0,.05);
+	  transition: transform .2s ease, box-shadow .2s ease;
+	}
+
+	.footer a img {
+	  width: 30px;
+	  height: 30px;
+	  object-fit: contain;
+	  display: block;
+	}
+
+	.footer a:hover {
+	  transform: translateY(-3px);
+	  box-shadow: 0 7px 16px rgba(0,0,0,.10);
+	  border-color: var(--orange);
+	}
+
+    @media (max-width: 560px) {
+      .hero {
+        padding: 48px 20px 78px;
+      }
+
+      .section {
+        padding: 0 12px;
+      }
+
+      .sec-header {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .section-title {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .intro,
+      .feat {
+        border-radius: 18px;
+      }
+
+      .benefits {
+        grid-template-columns: 1fr;
+      }
+
+      .desktop-screen {
+        min-height: 210px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-mark">🍜</div>
+        <h1>Sabaidee Kitchen</h1>
+        <p class="hero-sub">
+          QR-меню, которое говорит на языке ваших гостей
+        </p>
+        <div class="hero-badge">
+          ✓ Меню · Заказ · Статус
+        </div>
+
+        <!-- ЗАМЕНИТЬ НА РЕАЛЬНЫЙ QR -->
+        <div class="hero-qr">
+          <img src="images/qr-3.png" alt="QR-код">
+        </div>
+      </div>
+    </header>
+
+    <!-- 2. ПРОБЛЕМА -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon orange">💡</div>
+        <div class="sec-label">Зачем это ресторану</div>
+      </div>
+
+      <div class="intro">
+        <p>
+          Гость сам открывает меню, выбирает блюда и оформляет заказ —
+          без ожидания официанта.
+        </p>
+        <p>
+          <strong>Иностранный гость</strong> видит меню на понятном ему языке.
+          Местный гость просто заказывает быстрее.
+        </p>
+        <p>
+          А официант тратит меньше времени на повторяющиеся вопросы
+          и ручной приём заказов.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. ЯЗЫК -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon orange">🌏</div>
+        <div class="sec-label">Глазами гостя · 01</div>
+      </div>
+
+      <article class="feat">
+        <div class="with-screen right">
+          <div class="screen-col">
+            <div class="screen-frame">
+              <img src="images/language.png" alt="Экран выбора языка">
+            </div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill orange">Язык</span>
+            <h2 class="feat-title">Сначала — язык</h2>
+            <p class="feat-text">
+              Гость сканирует QR-код и выбирает удобный язык.
+            </p>
+            <p class="feat-text">
+              Названия блюд, описания и элементы меню автоматически
+              переключаются.
+            </p>
+            <p class="feat-text">
+              Языки можно настроить под ваших гостей.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 4. МЕНЮ -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon teal">🍜</div>
+        <div class="sec-label">Глазами гостя · 02</div>
+      </div>
+
+      <article class="feat">
+        <div class="with-screen left">
+          <div class="screen-col">
+            <div class="screen-frame">
+              <img src="images/menu.png" alt="Список блюд и категорий">
+            </div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill teal">Меню</span>
+            <h2 class="feat-title">Выбирает то, что хочет</h2>
+            <p class="feat-text">
+              Блюда разделены по категориям. Фото, цена, описание,
+              теги и дополнительные опции помогают быстро понять,
+              что заказать.
+            </p>
+            <p class="feat-text">
+              Острое, вегетарианское, фирменное, хит продаж —
+              любые теги можно настроить под ваше меню.
+            </p>
+
+            <div class="surprise">
+              <div class="surprise-title">🎲 Не знаете, что выбрать?</div>
+              <div class="surprise-text">
+                Кнопка «Удиви меня» предложит случайное блюдо из меню.
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 5. КАРТОЧКА БЛЮДА -->
+    <section class="section">
+      <article class="feat">
+        <div class="with-screen right">
+          <div class="screen-col">
+            <div class="screen-frame">
+              <img src="images/dish.png" alt="Карточка блюда и модификаторы">
+            </div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill teal">Блюдо</span>
+            <h2 class="feat-title">Всё понятно ещё до заказа</h2>
+            <p class="feat-text">
+              Открыл блюдо — увидел фото, описание, цену и доступные варианты.
+            </p>
+            <p class="feat-text">
+              Можно выбрать степень остроты, сладости или другие параметры —
+              прямо в карточке блюда.
+            </p>
+            <p class="feat-text">
+              Не нужно звать официанта, чтобы уточнить каждую мелочь.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 6. ЗАКАЗ -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon teal">🛒</div>
+        <div class="sec-label">Глазами гостя · 03</div>
+      </div>
+
+      <article class="feat">
+        <div class="with-screen left">
+          <div class="screen-col">
+            <div class="screen-frame">
+              <img src="images/cart.png" alt="Корзина и оформление заказа">
+            </div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill teal">Заказ</span>
+            <h2 class="feat-title">Заказ — прямо со стола</h2>
+            <p class="feat-text">
+              Гость добавляет блюда в корзину, выбирает
+              <strong>в ресторане или с собой</strong>
+              и подтверждает заказ.
+            </p>
+            <p class="feat-text">
+              Заказ сразу появляется у вашей команды.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 7. СТАТУС + ОФИЦИАНТ -->
+    <section class="section">
+      <article class="feat">
+        <div class="with-screen right">
+          <div class="screen-col">
+            <div class="screen-frame">
+              <img src="images/status.png" alt="Статус заказа">
+            </div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill green">После заказа</span>
+            <h2 class="feat-title">Гость знает, что происходит</h2>
+            <p class="feat-text">
+              После оформления заказа гость видит его статус:
+              <strong>принят → готовится → готов</strong>.
+            </p>
+            <p class="feat-text">
+              Не нужно постоянно спрашивать официанта:
+              «А мой заказ уже готов?»
+            </p>
+            
+          </div>
+        </div>
+      </article>
+
+      <article class="feat">
+        <div class="with-screen left">
+          <div class="screen-col">
+            
+          </div>
+
+          <div class="text-col">
+            <span class="pill green">Сервис</span>
+            <h2 class="feat-title">Официант узнаёт сразу</h2>
+			<div class="surprise" style="background:#F2FAF6;border-color:#D4EBDD;">
+              <div class="surprise-title" style="color:#1A6B42;">🔔 Нужно позвать официанта?</div>
+              <div class="surprise-text">
+                Одно нажатие — и команда получает уведомление с номером стола.
+              </div>
+            </div>
+            <p class="feat-text">
+              Гость нажимает кнопку вызова — на панели появляется
+              уведомление с номером стола.
+            </p>
+            <p class="feat-text">
+              Подошли к гостю — отметили вызов. Готово.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- 8. ПАНЕЛЬ РЕСТОРАНА -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon orange">🖥️</div>
+        <div class="sec-label">Глазами команды</div>
+      </div>
+
+      <h2 class="section-title">Пока гость заказывает — вы всё видите</h2>
+
+      <article class="feat">
+        <div class="feat-inner">
+		
+          <p class="feat-text" style="margin-bottom:18px;">
+            В панели ресторана отображаются активные заказы:
+            <strong>стол · блюда · сумма · статус</strong>.
+          </p>
+
+          <div class="desktop-screen">
+            <div>
+              <img src="images/dashboard.png" alt="Дашборд">
+            </div>
+          </div>
+
+          <p class="feat-text" style="margin-top:18px;">
+            Новые заказы появляются автоматически.
+            Приняли заказ → изменили статус.
+            Заказ готов → изменили статус.
+          </p>
+          <p class="feat-text">
+            Гость видит изменения на своём телефоне.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 9. УВЕДОМЛЕНИЯ -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon teal">🔔</div>
+        <div class="sec-label">Уведомления</div>
+      </div>
+
+      <article class="feat">
+	  
+	  
+        <div class="with-screen left">
+          <div class="screen-col">
+            <div class="feat-logos">
+				<img src="logos/whatsapp.png" alt="WhatsApp">
+				<img src="logos/telegram.png" alt="Telegram">
+			</div>
+			<div class="feat-logos">
+				<img src="logos/line.png" alt="LINE">
+				<img src="logos/facebook-messenger.png" alt="Facebook">
+			</div>
+          </div>
+
+          <div class="text-col">
+            <span class="pill teal">Как удобно вам</span>
+            <h2 class="feat-title">Уведомления — туда, где удобно вашей команде</h2>
+            <p class="feat-text">
+              Новый заказ или вызов официанта сразу отправляется вашей команде. 
+			 </p>
+			 <p class="feat-text">
+				Какой мессенджер используете — такой и подключим.
+			</p>	
+          </div>
+		</div>
+		
+		
+      </article>
+    </section>
+
+    <!-- 10. АНАЛИТИКА -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon green">📊</div>
+        <div class="sec-label">Аналитика</div>
+      </div>
+
+      <h2 class="section-title">Теперь вы видите, что происходит в ресторане</h2>
+
+      <article class="feat">
+        <div class="feat-inner">
+          <div class="desktop-screen">
+            <div>
+              <img src="images/analytics.png" alt="Аналитика">
+            </div>
+          </div>
+
+          <ul class="analytics-list">
+            <li><span class="li-icon">💰</span><span>Выручка</span></li>
+            <li><span class="li-icon">🧾</span><span>Количество заказов</span></li>
+            <li><span class="li-icon">📈</span><span>Средний чек</span></li>
+            <li><span class="li-icon">🕐</span><span>Часы пик</span></li>
+            <li><span class="li-icon">🔥</span><span>Топ блюд</span></li>
+            <li><span class="li-icon">📅</span><span>Динамика продаж</span></li>
+          </ul>
+
+          <p class="feat-text" style="margin-top:15px;">
+            Это не просто цифры. Они помогают понять, что продавать,
+            когда усиливать команду и какие блюда действительно любят ваши гости.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 11. ВЫГОДЫ -->
+    <section class="section">
+      <div class="sec-header">
+        <div class="sec-icon orange">✓</div>
+        <div class="sec-label">Результат</div>
+      </div>
+
+      <h2 class="section-title">Меньше работы. Больше контроля.</h2>
+
+      <div class="benefits">
+        <article class="benefit">
+          <div class="benefit-icon">👥</div>
+          <h3 class="benefit-title">Для гостей</h3>
+          <p class="benefit-text">
+            Понятное меню и простой заказ.
+          </p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">⚡</div>
+          <h3 class="benefit-title">Для официантов</h3>
+          <p class="benefit-text">
+            Меньше ручной работы и повторяющихся вопросов.
+          </p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">🍽️</div>
+          <h3 class="benefit-title">Для ресторана</h3>
+          <p class="benefit-text">
+            Меньше путаницы, больше контроля над заказами.
+          </p>
+        </article>
+
+        <article class="benefit">
+          <div class="benefit-icon">📊</div>
+          <h3 class="benefit-title">Для владельца</h3>
+          <p class="benefit-text">
+            Понятная аналитика и данные для принятия решений.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 12. CTA -->
+    <section class="section">
+      <div class="cta">
+        <h2>Попробуем для вашего ресторана?</h2>
+
+        <p class="cta-lead">
+          Sabaidee Kitchen можно настроить под ваш ресторан.
+        </p>
+
+        <div class="custom-list">
+          <div class="custom-item">Дизайн — под стиль вашего заведения</div>
+          <div class="custom-item">Языки — под ваших гостей</div>
+          <div class="custom-item">Меню — категории, теги и модификаторы</div>
+          <div class="custom-item">Уведомления — в удобный вашей команде канал</div>
+        </div>
+
+        <p class="cta-lead">
+          Хотите посмотреть демо? Напишите нам в WhatsApp —
+          покажем, как Sabaidee Kitchen может выглядеть именно для вашего ресторана.
+        </p>
+
+        <a class="cta-button" href="https://wa.me/8562099527710">
+          Написать в WhatsApp
+        </a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <strong>AI Flow Studio</strong><br>
+      Mr. Deema Maltsev<br>
+      Vientiane, Laos
+
+     <div class="footer-links">
+		<a href="https://wa.me/8562099527710" aria-label="WhatsApp">
+			<img src="logos/whatsapp.png" alt="WhatsApp">
+		</a>
+		
+		<a href="https://t.me/dmitriimaltsev" aria-label="Telegram">
+			<img src="logos/telegram.png" alt="Telegram">
+		</a>
+
+		<a href="https://line.me/R/ti/p/@890udmxz" aria-label="LINE">
+			<img src="logos/line.png" alt="LINE">
+		</a>
+
+		<a href="https://www.facebook.com/AIFlowStudio" aria-label="Facebook">
+			<img src="logos/facebook.png" alt="Facebook">
+		</a>
+
+		<a href="https://www.instagram.com/ai.flow_studio" aria-label="Instagram">
+			<img src="logos/instagram.png" alt="Instagram">
+		</a>
+
+		<a href="https://www.tiktok.com/@aiflowstudio" aria-label="TikTok">
+			<img src="logos/tiktok.png" alt="TikTok">
+		</a>		  
+	</div>
+    </footer>
+
+  </main>
+</body>
+</html>
